@@ -11,6 +11,7 @@ function makePostOptions(options) {
   var timestamp = Math.floor(Date.now() / 1000);
   var devHash = md5(timestamp + options.secretKey);
   var apiAddress = "https://platform.api.onesky.io"
+  
   return {
     method: 'POST',
     url: apiAddress + '/1/projects/' + options.projectId + '/files?' + queryString.stringify({
@@ -37,9 +38,9 @@ function makePostOptions(options) {
 }
 
 function sendRequest(requestData, callback) {
-  console.log("request starting");
   request(requestData, function (error, response, body) {
     body = JSON.parse(body);
+    
     if (error) {
       error = new PluginError(PLUGIN_NAME, 'error in sending request to one sky api');
     }
@@ -49,7 +50,6 @@ function sendRequest(requestData, callback) {
     else {
       body = body.meta.data;
     }
-    console.log("request done");
     callback(error,body);
   });
 }
@@ -57,7 +57,7 @@ function sendRequest(requestData, callback) {
 
 function postFile(options) {
   options = options || {};
-  console.log("Start");
+
   if (!options.publicKey || !options.secretKey)
     throw new PluginError(PLUGIN_NAME, 'please specify public and secret keys');
 
@@ -73,18 +73,17 @@ function postFile(options) {
   if (options.keepStrings !== true && options.keepStrings !== false)
       options.keepStrings = true;
   
- var stream = through.obj(function(file, enc, cb) {
+  var stream = through.obj(function(file, enc, cb) {
       
     if (file.isBuffer()) {
-      console.log("start stream");
       var fileContent = file.contents;
-      if (!fileContent) {  // if null is read
+      // if null is read
+      if (!fileContent) {  
         throw new PluginError(PLUGIN_NAME, 'file content is NULL');
       }
       fileContent = fileContent.toString(enc);
       options.content = fileContent;
       var requestData = makePostOptions(options);
-
       sendRequest(requestData, function(error, body){
         if(error) {
           stream.emit("error", error);
@@ -92,11 +91,9 @@ function postFile(options) {
         stream.emit('end');
       });
     }
-    // make sure the file goes through the next gulp plugin
     this.push(file);
     cb();
   });
-  console.log("endddd"+ stream);
   return stream;
 }
 
