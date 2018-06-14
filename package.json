@@ -1,0 +1,29 @@
+{
+  "name": "gulp-onesky-post",
+  "version": "1.0.0",
+  "description": "Upload translation files to onesky",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sudhakarshah/gulp-onesky-post.git"
+  },
+  "keywords": [
+    "gulpplugin"
+  ],
+  "author": "sudhakarshah",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sudhakarshah/gulp-onesky-post/issues"
+  },
+  "homepage": "https://github.com/sudhakarshah/gulp-onesky-post#readme",
+  "devDependencies": {
+    "md5": "^2.2.1",
+    "plugin-error": "^1.0.1",
+    "querystring": "^0.2.0",
+    "request": "^2.87.0",
+    "through2": "^2.0.3"
+  }
+}
